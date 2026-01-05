@@ -11,8 +11,8 @@ Quick Sort | O(n log n) | O(n log n) | O(n²) | O(log n) | No
 Heap Sort | O(n log n) | O(n log n) | O(n log n) | O(1) | No
 Counting Sort | O(n+k) | O(n+k) | O(n+k) | O(k) | Yes
  */
-public class Sorting1 {
-    //unstable
+public class Sorting {
+
     public static void selection(int[] arr){
         int n = arr.length;
         for(int i=0;i<n;i++){
@@ -27,7 +27,7 @@ public class Sorting1 {
             arr[i]=t;
         }
     }
-    //stable
+
     public static void bubbleSort(int[] arr){
         int n = arr.length;
         for(int i=0;i<n-1;i++){
@@ -57,10 +57,68 @@ public class Sorting1 {
         }
     }
 
+    public static void mergeSort(int[] arr,int s,int e){
+        if(e-s==1){
+            return;
+        }
+        int mid = (s+e)/2;
+        mergeSort(arr,s,mid);
+        mergeSort(arr,mid,e);
+        merge(arr,s,mid,e);
+    }
+
+    private static void merge(int[] arr, int s, int mid, int e) {
+        int[] temp = new int[e-s];
+        int i=s,j=mid,k=0;
+        while(i<mid && j<e){
+            if(arr[i]<arr[j]){
+                temp[k++]=arr[i++];
+            }else{
+                temp[k++]=arr[j++];
+            }
+        }
+        while(i<mid){
+            temp[k++]=arr[i++];
+        }
+        while(j<e){
+            temp[k++]=arr[j++];
+        }
+        for(int l=0;l<temp.length;l++){
+            arr[l+s] = temp[l];
+        }
+    }
+
+    public static void quickSort(int[] arr, int l, int h){
+        if(l>=h){
+            return;
+        }
+        int s=l;
+        int e=h;
+        int m=(l+h)/2;
+        int piv = arr[m];
+        while(s<=e){
+            while(arr[s]<piv){
+                s++;
+            }
+            while(arr[e]>piv){
+                e--;
+            }
+            if(s<=e){
+                int temp = arr[s];
+                arr[s] = arr[e];
+                arr[e] = temp;
+                s++;
+                e--;
+            }
+        }
+        quickSort(arr,l,e);
+        quickSort(arr,s,h);
+    }
+
     public static void main(String[] args) {
-        int[] arr = {8,4,2,7,8,2,5,1,7,8,9,5,4,3,1};
+        int[] arr = {8,4,2,7,8,2,5,1,7,8,9,5,4,3,1};//{7, 4, 1, 5, 3};//{8,4,2,7,8,2,5,1,7,8,9,5,4,3,1};
         System.out.println(Arrays.toString(arr));
-        insertion(arr);
+        quickSort(arr,0,arr.length-1);
         System.out.println(Arrays.toString(arr));
     }
 }
