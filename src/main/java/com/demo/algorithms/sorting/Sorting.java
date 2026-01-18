@@ -96,6 +96,7 @@ public class Sorting {
         int e=h;
         int m=(l+h)/2;
         int piv = arr[m];
+        System.out.println("Pivot: "+piv+", l: "+l+", h: "+h+", m: "+m+", arr: "+ Arrays.toString(arr));
         while(s<=e){
             while(arr[s]<piv){
                 s++;
@@ -115,10 +116,38 @@ public class Sorting {
         quickSort(arr,s,h);
     }
 
+    public static void quickSort1(int[] arr,int l,int h){
+        if(l<h){
+            int p = partition(arr,l,h);
+            quickSort1(arr,l,p-1);
+            quickSort1(arr,p+1,h);
+        }
+    }
+
+    private static int partition(int[] arr, int l, int h) {
+        int pivot = arr[h];
+        int i = l - 1;
+        for (int j = l; j < h; j++) {
+            if(arr[j]<pivot){
+                i++;
+                int temp = arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+            }
+        }
+        int t=arr[i+1];
+        arr[i+1]=arr[h];
+        arr[h]=t;
+        return i+1;
+    }
+
     public static void main(String[] args) {
         int[] arr = {8,4,2,7,8,2,5,1,7,8,9,5,4,3,1};//{7, 4, 1, 5, 3};//{8,4,2,7,8,2,5,1,7,8,9,5,4,3,1};
+        int[] arr1 = {8,4,2,7,8,2,5,1,7,8,9,5,4,3,1};//{7, 4, 1, 5, 3};//{8,4,2,7,8,2,5,1,7,8,9,5,4,3,1};
         System.out.println(Arrays.toString(arr));
         quickSort(arr,0,arr.length-1);
+        quickSort1(arr1,0,arr.length-1);
         System.out.println(Arrays.toString(arr));
+        System.out.println(Arrays.toString(arr1));
     }
 }
