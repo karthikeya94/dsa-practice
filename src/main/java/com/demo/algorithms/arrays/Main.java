@@ -1,4 +1,4 @@
-package com.demo.algorithms.arrays.easy;
+package com.demo.algorithms.arrays;
 
 import java.util.*;
 
