@@ -15,6 +15,7 @@ public class Main {
         findMissing(new int[]{4, 0, 2, 1});
         longestSubArray(new int[]{ -1, 1, 1 },1);
         longestSubArraySumP(new int[]{10, 5, 2, 7, 1, 9},15);
+        setZeros(new int[][]{{3,1,2,4},{3,0,5,2},{1,3,0,5}});
     }
 
     public static void longestSubArray(int[] arr,int k){
@@ -186,4 +187,155 @@ public class Main {
             }
         }
     }
+
+
+    //medium
+    public static void sortColors(int[] arr) {
+        int n = arr.length;
+        int low = 0, mid = 0, high = n - 1;
+        while (mid <= high) {
+            if (arr[mid] == 0) {
+                int t = arr[low];
+                arr[low++] = arr[mid];
+                arr[mid++] = t;
+            } else if (arr[mid] == 1) {
+                mid++;
+            } else {
+                int t = arr[mid];
+                arr[mid] = arr[high];
+                arr[high] = t;
+                high--;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    public static void majorityElement1(int[] arr){
+        int n = arr.length;
+        int cnt=0,el=0;
+        for(int i:arr){
+            if(cnt==0){
+                cnt=1;el=i;
+            }else if(el==i){
+                cnt++;
+            }else {
+                cnt--;
+            }
+        }
+        int cnt1=0;
+        for(int i:arr){
+            if(i==el) cnt1++;
+        }
+        if(cnt1>n/2){
+            System.out.println(el);
+        }else {
+            System.out.println("No majority element");
+        }
+    }
+
+    public static void printSubArrayWithMaxSum(int[] arr){
+            int n = arr.length;
+            int maxSum = Integer.MIN_VALUE;
+            int curSum=0;
+            int start=0,end=0,s=0;
+            for(int i=0;i<n;i++){
+                curSum+=arr[i];
+                if(curSum>maxSum){
+                    maxSum=curSum;
+                    start=s;end=i;
+                }
+                if(curSum<0){
+                    curSum=0;s=i+1;
+                }
+            }
+            System.out.println("Max sum: "+maxSum);
+            System.out.println("Subarray with max sum: "+Arrays.toString(Arrays.copyOfRange(arr,start,end+1)));
+    }
+
+    public static void nextPermutation(int[] arr) {
+        int n = arr.length;
+        int ind = -1;
+        for(int i=n-2;i>=0;i--){
+            if(arr[i]<arr[i+1]){
+                ind=i;break;
+            }
+        }
+        if(ind == -1){
+            reverse(arr,0,n-1);
+            return;
+        }
+        for(int i=n-1;i>ind;i--){
+            if(arr[i]>arr[ind]){
+                int t = arr[i];
+                arr[i] = arr[ind];
+                arr[ind] = t;
+                break;
+            }
+        }
+        reverse(arr,ind+1,n-1);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    public static void longestConsecutive(int[] arr){
+        Set<Integer> set = new HashSet<>();
+        for(int i:arr){set.add(i);}
+        int ans=0;
+        for(int i:arr){
+            if(!set.contains(i-1)){
+                int cnt=1;
+                while(set.contains(i+cnt)){
+                    cnt++;
+                }
+                ans = Math.max(ans,cnt);
+            }
+        }
+        System.out.println(ans);
+    }
+
+    public static void setZeros(int[][] arr){
+        int n = arr.length;
+        int m = arr[0].length;
+        boolean frz=false, fcz=false;
+        for(int i=0;i<m;i++){
+            if(arr[0][i]==0){
+                frz=true;
+                break;
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(arr[i][0]==0){
+                fcz=true;break;
+            }
+        }
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                if(arr[i][j]==0){
+                    arr[i][0]=0;
+                    arr[0][j]=0;
+                }
+            }
+        }
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                if(arr[i][0]==0 || arr[0][j]==0){
+                    arr[i][j]=0;
+                }
+            }
+        }
+        if(frz){
+            for(int i=0;i<m;i++){
+                arr[0][i]=0;
+            }
+        }
+        if (fcz){
+            for(int i=0;i<n;i++){
+                arr[i][0]=0;
+            }
+        }
+        for(int[] a:arr){
+            System.out.println(Arrays.toString(a));
+        }
+    }
+
+
 }
