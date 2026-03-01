@@ -3,69 +3,107 @@ package com.demo.algorithms.heap;
 import java.util.Arrays;
 
 public class MinHeap {
-    static int size =0;
-    void swap(int[] heap, int l, int r) {
-        int temp = heap[l];
-        heap[l] = heap[r];
-        heap[r] = temp;
+    
+    // Maintain size internally for active items in current structure
+    private int size = 0;
+
+    // ==========================================
+    // Core Min Heap Operations
+    // ==========================================
+
+    /**
+     * Inserts a new value into the min heap.
+     */
+    public void insert(int[] heap, int val) {
+        heap[size] = val;
+        heapifyUp(heap, size);
+        size++;
     }
 
-    void insert(int val, int ind, int[] heap) {
-        heap[ind] = val;
-        heapUp(ind, heap);
+    /**
+     * Deletes the element at the specified index (typically root at 0).
+     */
+    public void delete(int[] heap, int ind) {
+        if (size <= 0) return;
+        
+        // Swap element to delete with the last active element
+        swap(heap, ind, size - 1);
+        size--; // Reduce size before restoring structure
+        
+        // Restore heap property
+        heapifyDown(heap, ind, size);
     }
 
-    void heapUp(int ind, int[] heap) {
+    // ==========================================
+    // Heapify Helpers
+    // ==========================================
+
+    /**
+     * Moves the element up to maintain min heap property (Parent < Child).
+     */
+    private void heapifyUp(int[] heap, int ind) {
         while (ind > 0) {
-            int pind = (ind - 1) / 2;
-            if (heap[ind] < heap[pind]) {
-                swap(heap, ind, pind);
-                ind = pind;
+            int parentInd = (ind - 1) / 2;
+            if (heap[ind] < heap[parentInd]) {
+                swap(heap, ind, parentInd);
+                ind = parentInd;
             } else {
                 break;
             }
         }
     }
 
-    void delete(int ind, int[] heap) {
-        int currentHeapSize = size;
-        if(currentHeapSize<=0) return;
-        swap(heap, 0, currentHeapSize - 1);
-        heapDown(0, heap, currentHeapSize - 1);
+    /**
+     * Moves the element down to maintain min heap property (Parent < Child).
+     */
+    private void heapifyDown(int[] heap, int ind, int currentSize) {
+        int smallest = ind;
+        int leftChild = (2 * ind) + 1;
+        int rightChild = (2 * ind) + 2;
+
+        if (leftChild < currentSize && heap[leftChild] < heap[smallest]) {
+            smallest = leftChild;
+        }
+        if (rightChild < currentSize && heap[rightChild] < heap[smallest]) {
+            smallest = rightChild;
+        }
+        if (smallest != ind) {
+            swap(heap, ind, smallest);
+            heapifyDown(heap, smallest, currentSize);
+        }
     }
 
-    void heapDown(int ind, int[] heap, int len) {
-        int left = (2 * ind) + 1;
-        int right = (2 * ind) + 2;
-        int small = ind;
+    // ==========================================
+    // Utilities
+    // ==========================================
 
-        if (left < len && heap[left] < heap[small]) {
-            small = left;
-        }
-        if (right < len && heap[right] < heap[small]) {
-            small = right;
-        }
-        if (ind != small) {
-            swap(heap, ind, small);
-            heapDown(small, heap, len);
-            size--;
-        }
+    private void swap(int[] heap, int l, int r) {
+        int temp = heap[l];
+        heap[l] = heap[r];
+        heap[r] = temp;
     }
+
+    // ==========================================
+    // Test Runners
+    // ==========================================
 
     public static void main(String[] args) {
-        int[] arr = {10, 5, 30, 2, 8};
-        System.out.println("Original: " + Arrays.toString(arr));
-        MinHeap heap = new MinHeap();
-        for (int i = 0; i < arr.length; i++) {
-//             heapUp(i, arr);
-            heap.insert(arr[i], i, arr);
+        int[] arr = new int[10]; // Provide array capacity
+        int[] initialVals = {10, 5, 30, 2, 8};
+        
+        System.out.println("Original Set: " + Arrays.toString(initialVals));
+        MinHeap minHeap = new MinHeap();
+        
+        for (int val : initialVals) {
+            minHeap.insert(arr, val);
         }
-        size=arr.length;
-        System.out.println("Min Heap: " + Arrays.toString(arr));
+        
+        System.out.println("Min Heap built: " + Arrays.toString(Arrays.copyOf(arr, minHeap.size)));
 
-        heap.delete(0, arr);
-        System.out.println("After deleting root: " + Arrays.toString(arr));
-        heap.delete(0, arr);
-        System.out.println("After deleting root: " + Arrays.toString(arr));
+        minHeap.delete(arr, 0);
+        System.out.println("After deleting root: " + Arrays.toString(Arrays.copyOf(arr, minHeap.size)));
+        
+        minHeap.delete(arr, 0);
+        System.out.println("After deleting root: " + Arrays.toString(Arrays.copyOf(arr, minHeap.size)));
     }
 }
