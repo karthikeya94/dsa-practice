@@ -59,7 +59,7 @@ public class Sorting {
         for (int i = 1; i < n; i++) {
             int currentKey = arr[i];
             int j = i - 1;
-            
+
             // Shift progressively larger elements rightward
             while (j >= 0 && arr[j] > currentKey) {
                 arr[j + 1] = arr[j];
@@ -82,17 +82,17 @@ public class Sorting {
             return;
         }
         int mid = start + (end - start) / 2;
-        
+
         mergeSort(arr, start, mid);
         mergeSort(arr, mid, end);
-        
+
         mergeSortedHalves(arr, start, mid, end);
     }
 
     private static void mergeSortedHalves(int[] arr, int start, int mid, int end) {
         int[] temp = new int[end - start];
         int i = start, j = mid, k = 0;
-        
+
         while (i < mid && j < end) {
             if (arr[i] <= arr[j]) { // Uses <= for stability
                 temp[k++] = arr[i++];
@@ -100,14 +100,14 @@ public class Sorting {
                 temp[k++] = arr[j++];
             }
         }
-        
+
         while (i < mid) {
             temp[k++] = arr[i++];
         }
         while (j < end) {
             temp[k++] = arr[j++];
-        } 
-        
+        }
+
         // Copy back to original array
         for (int l = 0; l < temp.length; l++) {
             arr[start + l] = temp[l];
@@ -130,7 +130,7 @@ public class Sorting {
         int end = high;
         int mid = (low + high) / 2;
         int pivot = arr[mid];
-        
+
         while (start <= end) {
             while (arr[start] < pivot) {
                 start++;
@@ -146,7 +146,7 @@ public class Sorting {
                 end--;
             }
         }
-        
+
         quickSortMiddlePivot(arr, low, end);
         quickSortMiddlePivot(arr, start, high);
     }
@@ -166,7 +166,7 @@ public class Sorting {
     private static int partitionLomuto(int[] arr, int low, int high) {
         int pivot = arr[high]; // Validate against Last element
         int smallerElementEndIndex = low - 1;
-        
+
         for (int j = low; j < high; j++) {
             if (arr[j] < pivot) {
                 smallerElementEndIndex++;
@@ -175,12 +175,12 @@ public class Sorting {
                 arr[j] = temp;
             }
         }
-        
+
         // Final pivot placement
         int temp = arr[smallerElementEndIndex + 1];
         arr[smallerElementEndIndex + 1] = arr[high];
         arr[high] = temp;
-        
+
         return smallerElementEndIndex + 1;
     }
 
@@ -190,11 +190,11 @@ public class Sorting {
 
     public static void main(String[] args) {
         int[] originalArray = {8, 4, 2, 7, 8, 2, 5, 1, 7, 8, 9, 5, 4, 3, 1};
-        
+
         int[] copy1 = Arrays.copyOf(originalArray, originalArray.length);
         quickSortMiddlePivot(copy1, 0, copy1.length - 1);
         System.out.println("Quick Sort (Middle Pivot): " + Arrays.toString(copy1));
-        
+
         int[] copy2 = Arrays.copyOf(originalArray, originalArray.length);
         quickSortEndPivot(copy2, 0, copy2.length - 1);
         System.out.println("Quick Sort (End Pivot):    " + Arrays.toString(copy2));
