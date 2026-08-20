@@ -1,5 +1,7 @@
 package com.demo.algorithms.graph.bfs;
 
+import java.util.*;
+
 public class ShortestPath {
 
     public static int shortestPath(int[][] grid){
@@ -27,7 +29,7 @@ public class ShortestPath {
                     int newX = x + dir[0];
                     int newY = y + dir[1];
                     if(newX>=0 && newX<rows && newY>=0 && newY<cols && !visited[newX][newY] && grid[newX][newY]==1){
-                        queue.offer(new int[]{newX,newYSWE,distance+1});
+                        queue.offer(new int[]{newX,newY,distance+1});
                         visited[newX][newY] = true;
                     }
                 }

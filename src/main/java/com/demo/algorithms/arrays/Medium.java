@@ -1,7 +1,7 @@
 package com.demo.algorithms.arrays;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Medium {
 
